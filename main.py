@@ -9,13 +9,19 @@ import asyncio
 
 adm = 614548307187990651 # Eu gabriel (gabbzn)
 
+try:
+    conexao = psycopg2.connect(database = "discord", host = 'pg-198bee84-discord-gb.d.aivencloud.com', user = 'avnadmin', password = 'AVNS_BPnCotxyGQ_PZW7nyV8', port = '14647')
+    bd = conexao.cursor()
+    bd.execute("SELECT current_database();") 
 
-conexao = psycopg2.connect('postgres://avnadmin:AVNS_BPnCotxyGQ_PZW7nyV8@pg-198bee84-discord-gb.d.aivencloud.com:14647/defaultdb?sslmode=require')
-bd = conexao.cursor()
+    print("Banco conectado:", bd.fetchone()[0])
+
+except Exception as e:
+    print("Erro ao conectar:", e)
 
 
 permissoes = discord.Intents.all()
-bot = commands.Bot(command_prefix='!', intents=permissoes)
+bot = commands.Bot(command_prefix='g!', intents=permissoes)
 permissoes.bans = True  
 permissoes.members = True
 
