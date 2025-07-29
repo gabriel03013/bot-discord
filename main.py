@@ -317,4 +317,10 @@ async def depositar(ctx, usuario:discord.Member, deposito:int):
             await ctx.reply(f"Você não pode depositar para si mesmo.")
     else:
         await ctx.reply(f"O usuário não está registrado no sistema.")
+
+@bot.command()
+async def test(ctx):
+    print(f"Executado por {ctx.author}")
+    await ctx.send("Rodou!")
+
 bot.run('MTM0Nzk4MjY2MjE5MDQ5NzkzNA.GFS8us.ZTWUrBaH8vuFdEUACKYeohGBS95cUjnag1cIbs')
