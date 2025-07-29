@@ -21,7 +21,7 @@ except Exception as e:
 
 
 permissoes = discord.Intents.all()
-bot = commands.Bot(command_prefix='g!', intents=permissoes)
+bot = commands.Bot(command_prefix='!', intents=permissoes)
 permissoes.bans = True  
 permissoes.members = True
 
