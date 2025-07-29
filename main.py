@@ -48,7 +48,10 @@ class OpcoesLoja(discord.ui.View):
         if saldo_disponivel is None:
             await interaction.response.send_message("Você ainda não tem melancias!", ephemeral=True)
             await asyncio.sleep(5)
-            await interaction.delete_original_response()
+            try:
+                await interaction.delete_original_response()
+            except discord.NotFound:
+                pass
             return
         
         saldo_atual = saldo_disponivel[0]
@@ -62,19 +65,19 @@ class OpcoesLoja(discord.ui.View):
         else:
             await interaction.response.send_message("Opção inválida!", ephemeral=True)
             await asyncio.sleep(5)
-            await interaction.delete_original_response()
-            return
-
-        if saldo_atual < valor:
-            await interaction.response.send_message("Você não tem melancias suficientes!", ephemeral=True)
-            await asyncio.sleep(5)
-            await interaction.delete_original_response()
+            try:
+                await interaction.delete_original_response()
+            except discord.NotFound:
+                pass
             return
 
         view_confirmacao = ConfirmarCompra(usuario, valor)
         await interaction.response.send_message(f"Você tem certeza que deseja comprar este item por {valor} melancias?", view=view_confirmacao, ephemeral=True)
         await asyncio.sleep(5)
-        await interaction.delete_original_response()
+        try:
+            await interaction.delete_original_response()
+        except discord.NotFound:
+            pass
 
 class ConfirmarCompra(discord.ui.View):
     def __init__(self, usuario, valor):
@@ -86,15 +89,21 @@ class ConfirmarCompra(discord.ui.View):
     async def botao_confirmar(self, interaction: discord.Interaction, button: discord.ui.Button):
         bd.execute("UPDATE usuarios_moedas SET melancias = melancias - %s WHERE nome = %s", (self.valor, self.usuario))
         conexao.commit()
-        await interaction.response.send_message("Compra confirmada! Melancias debitadas.", ephemeral=True, )
+        await interaction.response.send_message("Compra confirmada! Melancias debitadas.", ephemeral=True)
         await asyncio.sleep(5)
-        await interaction.delete_original_response()
+        try:
+            await interaction.delete_original_response()
+        except discord.NotFound:
+            pass
 
     @discord.ui.button(label="Cancelar", style=discord.ButtonStyle.red)
     async def botao_cancelar(self, interaction: discord.Interaction, button: discord.ui.Button):
         await interaction.response.send_message("Compra cancelada.", ephemeral=True)
         await asyncio.sleep(5)
-        await interaction.delete_original_response()
+        try:
+            await interaction.delete_original_response()
+        except discord.NotFound:
+            pass
 
 @bot.command()
 async def loja(ctx):
@@ -137,9 +146,10 @@ async def embed_loja(ctx):
 #
 
 # EVENTOS DO BOT
-@bot.event
 async def on_ready():
-    bot.add_view(OpcoesLoja())
+    if not hasattr(bot, 'view_registered'):
+        bot.add_view(OpcoesLoja())
+        bot.view_registered = True
     print('o gato colocou a melancia')
 
 @bot.event
