@@ -308,4 +308,4 @@ async def depositar(ctx, usuario:discord.Member, deposito:int):
             await ctx.reply(f"Você não pode depositar para si mesmo.")
     else:
         await ctx.reply(f"O usuário não está registrado no sistema.")
-bot.run('MTM0Nzk4MjY2MjE5MDQ5NzkzNA.GAzDyA.InsHVTrV00yGyn4JdT2bv5dwlRADuhJlJNu4hk')
+bot.run('MTM0Nzk4MjY2MjE5MDQ5NzkzNA.GFS8us.ZTWUrBaH8vuFdEUACKYeohGBS95cUjnag1cIbs')
