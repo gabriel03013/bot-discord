@@ -6,11 +6,14 @@ from random import randint as rd
 import datetime
 from discord import SelectOption
 import asyncio
+from dotenv import load_dotenv
+import os
 
 adm = 614548307187990651 # Eu gabriel (gabbzn)
+load_dotenv()
 
 try:
-    conexao = psycopg2.connect(database = "discord", host = 'pg-198bee84-discord-gb.d.aivencloud.com', user = 'avnadmin', password = 'AVNS_BPnCotxyGQ_PZW7nyV8', port = '14647')
+    conexao = psycopg2.connect(database = os.getenv("db_name"), host = os.getenv("db_host"), user = os.getenv("db_user"), password = os.getenv("db_password"), port = os.getenv("db_port"))
     bd = conexao.cursor()
     bd.execute("SELECT current_database();") 
 
@@ -323,4 +326,4 @@ async def test(ctx):
     print(f"Executado por {ctx.author}")
     await ctx.send("Rodou!")
 
-bot.run('MTM0Nzk4MjY2MjE5MDQ5NzkzNA.GFS8us.ZTWUrBaH8vuFdEUACKYeohGBS95cUjnag1cIbs')
+bot.run(os.getenv("token"))
